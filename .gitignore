@@ -1,1 +1,4 @@
 /dist
+src/python/rdcoder/itertools.py
+src/python/rdcoder/tests.py
+__pycache__
