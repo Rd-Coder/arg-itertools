@@ -91,3 +91,19 @@ def argsmatch(
         index+=1
 
     return matcheditems
+
+def argsequal(iterable: _Iterable[_Hashable], only_repeated: bool = True):
+    poslists = []
+    items = {}
+    index = 0
+    for item in iterable:
+        if poslist := items.get(item):
+            poslist.append(index)
+        else:
+            poslists.append(poslist := [index])
+            items[item] = poslist
+        index+=1
+
+    if only_repeated:
+        return [poslist for poslist in poslists if len(poslist)>1]
+    return poslists
