@@ -93,6 +93,24 @@ def argsmatch(
     return matcheditems
 
 def argsequal(iterable: _Iterable[_Hashable], only_repeated: bool = True):
+    '''Groups by indices elements that are equal.
+    Returns a list where each element is a list of positions starting from zero
+    of occurences of an item.
+    
+    Items are compared based on their hashes, thus elements within iterable must
+    be hashable.
+
+    Same as argswhere(iterable, ...)['argsequal'], but this function is
+    preferable.
+
+    Parameters
+    ----------
+    iterable : _Iterable[Hashable]
+        The iterable that contains the items to be grouped.
+    only_repeated : bool
+        If true (by default), only items that have more then one occurence will
+        be put in the returned list.
+    '''
     poslists = []
     items = {}
     index = 0
