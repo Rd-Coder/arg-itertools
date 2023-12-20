@@ -125,3 +125,37 @@ def argsequal(iterable: _Iterable[_Hashable], only_repeated: bool = True):
     if only_repeated:
         return [poslist for poslist in poslists if len(poslist)>1]
     return poslists
+
+def argsentityequal(iterable: _Iterable[_Hashable | _Iterable], only_repeated: bool = True):
+    SINGLE_SUBCOL = [None]
+    poslists = []
+    items = {}
+    index = 0
+    for subcol in iterable:
+        # Prepares the subcollection
+        if not isinstance(subcol, _Iterable):
+            SINGLE_SUBCOL[0] = subcol
+            subcol = SINGLE_SUBCOL
+
+        # Manage occurences
+        # > Selects and updates list of positions
+        poslist = None
+        for item in subcol:
+            if item in items:
+                poslist = items[item]
+                break
+            
+        if poslist:
+            poslist.append(index)
+        else:
+            poslists.append(poslist := [index])
+
+        # > Associates each item in subcol with the selected poslist
+        for item in subcol:
+            items[item] = poslist
+        
+        index+=1
+
+    if only_repeated:
+        return [poslist for poslist in poslists if len(poslist)>1]
+    return poslists
