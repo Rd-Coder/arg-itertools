@@ -71,21 +71,20 @@ def argsmatch(
     index = 0
     for item in iterable:
         # 1: Puts index of item to items
-        item_in_items = item in items
-        if item_in_items:
-            item_val = items[item]
+        item_val = items.get(item)
+        was_item_in_items = item_val is not None
+        if was_item_in_items:
             item_val[ARGSEQUAL_KEY].append(index)
         else:
-            items[item] = item_val = {ARGSEQUAL_KEY: [index], ARGSMATCH_KEY: None}
+            item_val = {ARGSEQUAL_KEY: [index], ARGSMATCH_KEY: None}
+            items[item] = item_val
 
         # 2: Puts index of item to the mapped match 
         mappeditem = mapfunc(item)
-        if mappeditem in items:
-            mappeditem_val = items[mappeditem]
-            # Call items[item] here is safe because is guaranteed that item was
-            # put to items if that statement is called after block 1.
+        mappeditem_val = items.get(mappeditem)
+        if mappeditem_val:
             mappeditem_val[ARGSMATCH_KEY] = item_val[ARGSEQUAL_KEY]
-            if not item_in_items:
+            if not was_item_in_items:
                 matcheditems[mappeditem] = mappeditem_val
         
         index+=1
