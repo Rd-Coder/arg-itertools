@@ -127,6 +127,43 @@ def argsequal(iterable: _Iterable[_Hashable], only_repeated: bool = True):
     return poslists
 
 def argsentityequal(iterable: _Iterable[_Hashable | _Iterable], only_repeated: bool = True):
+    '''Groups by indices entities that are equal.
+
+    Same as argsequal(...), however {iterable} can contain subiterables of
+    similar items (entity). An entity is equal to another if it contains
+    at least one item from the latter or if at least one item of it is
+    contained on the latter.
+
+    If no occurences of an element within an entity was found yet, the position
+    of that entity within {iterable} is appended to the list of occurences of
+    that entity (poslist). Subsequent repetitions are expected to be found in
+    {iterable} as a single object or within a subiterable. About the second case,
+    if the subiterable contains a value that already happened, then the position
+    of that subcollection within {iterable} is appended to the previously
+    associated poslist.
+
+    Thus, a subiterable if present is expected to contain different versions of
+    the same entity as, for example, different data types or other polimorphism
+    convention stablished by the user.
+
+    Parameters
+    ----------
+    iterable : _Iterable[_Hashable | _Iterable]
+        The iterable that contains entities to be grouped.
+
+    Please see argsequal(...) for more information.
+
+    Impl Advice
+    -----------
+    TODO
+    Note that since strings are iterable objects, they will be interpreted by
+    this function as subiterable of characteres, not as a single object.
+    Thus, if you want a string to be interpreted as a whole, you must put it
+    inside another iterable. This behaviour may change in the future.
+    
+    If you have any thoughts on this, please feel free to leave a feedback
+    at https://github.com/Rd-Coder/arg-itertools/issues.    
+    '''
     SINGLE_SUBCOL = [None]
     poslists = []
     items = {}
